@@ -1,0 +1,176 @@
+﻿<UserControl x:Class="Arco.Views.Users"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Arco="clr-namespace:Arco"
+             xmlns:local="clr-namespace:Arco.Views"
+             d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+             mc:Ignorable="d" 
+             Loaded="Control_Loaded" Unloaded="Control_Unloaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Grid x:Key="CustomDialogAdd"
+                         x:Name="CustomDialogAdd" Background="#10394d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="用户名" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="2"  Height="30" Text="{Binding Path=ViewUsers.NewUser.Username}"  Name="NewUser_Name"/>
+                    <Label Grid.Row="0" Grid.Column="2" Margin="1 5 0 0" Content="密码" HorizontalContentAlignment="right"/>
+                    <PasswordBox Grid.Row="0" Grid.Column="3" Margin="2"  Height="30" Name="MyPasswordBox"/>
+
+                    <Label Grid.Row="0" Grid.Column="4" Margin="1 5 0 0" Content="是否管理员" HorizontalContentAlignment="right"/>
+                    <CheckBox  Grid.Row="0" Grid.Column="5" Margin="2"  Height="30" 
+                               IsChecked="{Binding Path=ViewUsers.NewUser.Isadmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Margin="1 5 0 0" Content="本机IP" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=ViewUsers.NewUser.UserConfig.Localip}"/>
+                    <Label Grid.Row="1" Grid.Column="2" Margin="1 5 0 0" Content="本机端口" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Margin="2"   Height="30" Text="{Binding Path=ViewUsers.NewUser.UserConfig.Localport}"/>
+                    <Label Grid.Row="1" Grid.Column="4" Margin="1 5 0 0" Content="服务器IP" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="1" Grid.Column="5" Margin="2"   Height="30" Text="{Binding Path=ViewUsers.NewUser.UserConfig.Serverip}"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Margin="1 5 0 0" Content="服务器端口" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="2"  Height="30"  Text="{Binding Path=ViewUsers.NewUser.UserConfig.Serverport}"/>
+                    <Label Grid.Row="2" Grid.Column="2" Margin="1 5 0 0" Content="主分机" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Margin="2"   Height="30" Text="{Binding Path=ViewUsers.NewUser.UserConfig.Extno1}"/>
+                    <Label Grid.Row="2" Grid.Column="4" Margin="1 5 0 0" Content="备用分机" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="2" Grid.Column="5" Margin="2"   Height="30" Text="{Binding Path=ViewUsers.NewUser.UserConfig.Extno2}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0" Margin="1 5 0 0" Content="服务器用户名" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="2"  Height="30"  Text="{Binding Path=ViewUsers.NewUser.UserConfig.Pbxuser}"/>
+                    <Label Grid.Row="3" Grid.Column="2" Margin="1 5 0 0" Content="服务器密码" HorizontalContentAlignment="right"/>
+                    <PasswordBox Grid.Row="3" Grid.Column="3" Margin="2" Height="30"  Name="PBXPasswordBox"/>
+                    <Label Grid.Row="3" Grid.Column="4" Margin="1 5 0 0" Content="签入队列" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="3" Grid.Column="5" Margin="2"  Height="30"  Text="{Binding Path=ViewUsers.NewUser.UserConfig.Queue}"/>
+
+                    <Label Grid.Row="4" Grid.Column="0" Margin="1 5 0 0" Content="队列密码" HorizontalContentAlignment="right"/>
+                    <PasswordBox Grid.Row="4" Grid.Column="1" Margin="2" Height="30"  Name="PBXQueuePasswordBox"/>
+
+                </Grid>
+                <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 1 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0">
+                    <Button ToolTip="保存" Click="Save">
+                        <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                            <iconPacks:PackIconMaterial  Kind="ContentSave" />
+                            <Label Content="保存"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid x:Key="CustomDialogAddClose" x:Name="CustomDialogAddClose" Background="#298EDD" Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconBoxIcons Kind="RegularWindows" Width="18" Height="18" Margin="2 7 0 6" Grid.Row="0" Grid.Column="0" Foreground="White"/>
+                <Label Content="" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="14"
+                                              Height="14"
+                                              Kind="Close"/>
+                </Button>
+            </Grid>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Background="#4a516c" Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="0">
+                <iconPacks:PackIconMaterial Kind="LabelMultipleOutline" Width="25" Height="25" Margin="15 5 0 5" Foreground="White"/>
+                <Label Content="用户管理" FontSize="14" HorizontalContentAlignment="Left" Margin="5 3 0 0" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <Button ToolTip="新增" Click="Add_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconIonicons Kind="AddCircleOutlineiOS" />
+                        <Label Content="新增"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="修改" Click="Edit_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconFeatherIcons Kind="Edit" />
+                        <Label Content="修改"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="删除" Click="Del_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterialLight Kind="Delete" />
+                        <Label Content="删除"/>
+                    </StackPanel>
+                </Button>
+                
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" 
+                          Margin="5"
+                          Name="Groups_DataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Path=ViewUsers.MyUsers, Mode=OneWay}"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          Style="{DynamicResource MahApps.Styles.DataGrid.Azure}" 
+                          SelectionChanged="User_Datagrid_Seletion_Changed" GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Username}" Header="用户名" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding Isadmin}" Header="是否管理员" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Localip}" Header="本机IP" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Localport}" Header="本机端口" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Serverip}" Header="服务器IP" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Serverport}" Header="服务器端口" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Extno1}" Header="主分机" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Extno2}" Header="备用分机" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding UserConfig.Queue}" Header="主分机签入队列" Width="*"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+
+        </Grid>
+    </Grid>
+</UserControl>

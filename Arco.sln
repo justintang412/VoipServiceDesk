@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arco", "Arco.csproj", "{FECA4DED-4465-47A7-A385-5194F6F2E7F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "..\ConsoleAppTest\ConsoleAppTest.csproj", "{9851576C-726B-4F7F-968F-49AD9E44C95C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FECA4DED-4465-47A7-A385-5194F6F2E7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECA4DED-4465-47A7-A385-5194F6F2E7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECA4DED-4465-47A7-A385-5194F6F2E7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECA4DED-4465-47A7-A385-5194F6F2E7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9851576C-726B-4F7F-968F-49AD9E44C95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9851576C-726B-4F7F-968F-49AD9E44C95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9851576C-726B-4F7F-968F-49AD9E44C95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9851576C-726B-4F7F-968F-49AD9E44C95C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDCB00E7-3536-4F91-9E20-332AAF28A497}
+	EndGlobalSection
+EndGlobal

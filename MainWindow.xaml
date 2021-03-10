@@ -1,0 +1,625 @@
+﻿<Controls:MetroWindow x:Class="Arco.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:Arco="clr-namespace:Arco"
+                      xmlns:views="clr-namespace:Arco.Views"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      Title="语音融合调度系统"
+                      Foreground="White"
+                      Dialog:DialogParticipation.Register="{Binding}"
+                      d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+                      d:DesignHeight="600"
+                      d:DesignWidth="800"
+                      FontFamily="Microsoft YaHei"
+                      FontSize="12"
+                      FontWeight="Normal"
+                      Closing="ArcoWindow_Closing"
+                      GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+                      NonActiveGlowBrush="#CDFF0000"
+                      ShowIconOnTitleBar="True"
+                      WindowStartupLocation="CenterScreen"
+                      mc:Ignorable="d" WindowState="Maximized" Loaded="MetroWindow_Loaded"
+                      Icon="app.ico">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Thickness x:Key="ControlMargin">0 1 0 0</Thickness>
+            <Style x:Key="AccentCircleButtonStyle"
+                           BasedOn="{StaticResource MahApps.Styles.Button.MetroAccentSquare}"
+                           TargetType="{x:Type ButtonBase}">
+                <Setter Property="Foreground" Value="White" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontFamily" Value="Microsoft YaHei" />
+                <Setter Property="FontWeight" Value="Normal" />
+            </Style>
+
+            <Style TargetType="{x:Type DataGridCell}">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontFamily" Value="Microsoft YaHei" />
+                <Setter Property="FontWeight" Value="Normal" />
+            </Style>
+
+            <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="VerticalContentAlignment" Value="center" />
+            </Style>
+
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground" Value="#00ccfb" />
+                <Setter Property="Margin" Value="0 5 0 5"/>
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <Style TargetType="ToolBarPanel">
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="Orientation" Value="Horizontal"/>
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="5 2"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#076266" Offset="0"/>
+                            <GradientStop Color="#2d8a8e" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="29"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="29"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style TargetType="{x:Type DataGridRowHeader}">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style TargetType="iconPacks:PackIconBase" x:Key="Icon">
+                <Setter Property="Width" Value="16"/>
+                <Setter Property="Height" Value="16"/>
+                <Setter Property="Margin" Value="1 8 1 8"/>
+            </Style>
+            <Style TargetType="iconPacks:PackIconModern" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconBoxIcons" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconMaterial" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconFeatherIcons" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconEntypo" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconIonicons" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconMaterialLight" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconEvaIcons" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconFontAwesome" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconRPGAwesome" BasedOn="{StaticResource Icon}"/>
+            <Style TargetType="iconPacks:PackIconUnicons" BasedOn="{StaticResource Icon}"/>
+            
+
+
+            <Grid x:Key="CustomDialogMeeting"
+                         x:Name="CustomDialogMeeting">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Height="30"
+                        Margin="5">
+                        <TextBox
+                                    Margin="10 0 0 0"
+                                    Width="100"
+                                    Controls:TextBoxHelper.Watermark="请输入关键词"
+                                    Text="{Binding Path=ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox  Margin="5 0 0 0" Content="只显示常用联系人" IsChecked="{Binding Path=IsOnlyFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Margin="5 0 0 0" Content="过滤" Click="Contact_Query"/>
+                    </StackPanel>
+
+                    <DataGrid
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Margin="5"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=Contacts, Mode=OneWay}"
+                              IsReadOnly="True"
+                              RowHeaderWidth="0"
+                                SelectionChanged="DataGrid_SelectionChanged" SelectionMode="Single"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="姓名" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="分机号" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.RowSpan="2" Grid.Column="1" Width="190">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Margin="5 0 0 5" Grid.ColumnSpan="3"  Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Text="{Binding Path=DialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Row="1" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="1" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="1" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="2" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="1" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="3" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="2" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="4" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="2" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="5" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="2" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="6" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="3" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="7" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="3" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="8" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="3" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="9" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="4" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="*" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="4" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="0" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="4" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="#" FontSize="20" Click="Dial_Click"/>
+                        <Button Grid.Row="5" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" Width="48" Height="48" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" 
+                                    Content="添加" FontSize="14" Click="Meeting_Button_Call_Click"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid x:Key="CustomDialogMeetingClose" x:Name="CustomDialogMeetingClose" Background="#298edd">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="" Grid.Row="0" Grid.Column="0"/>
+                <Button Grid.Column="1" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="12"
+                                              Height="12"
+                                              Kind="Close" />
+                </Button>
+            </Grid>
+
+            <Grid x:Key="CustomDialoTransfer"
+                         x:Name="CustomDialoTransfer">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Height="30"
+                        Margin="5">
+                        <TextBox
+                                    Margin="10 0 0 0"
+                                    Width="100"
+                                    Controls:TextBoxHelper.Watermark="请输入关键词"
+                                    Text="{Binding Path=ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox  Margin="5 0 0 0" Content="只显示常用联系人" IsChecked="{Binding Path=IsOnlyFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Margin="5 0 0 0" Content="过滤" Click="Contact_Query"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="ContactList"
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Margin="5"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=Contacts, Mode=OneWay}"
+                              IsReadOnly="True"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="姓名" />
+                            <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" />
+                            <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" />
+                            <DataGridTemplateColumn Header="联系方式">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid
+                                            AutoGenerateColumns="False"
+                                            ItemsSource="{Binding Path=Devices}"
+                                            IsReadOnly="True"
+                                            RowHeaderWidth="0"
+                                            HeadersVisibility="None"
+                                            Style="{DynamicResource MahApps.Styles.DataGrid.Azure}" SelectionChanged="DataGrid_SelectionChanged" SelectionMode="Single">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding DeviceType.Name}" Header="设备" />
+                                                <DataGridTextColumn Binding="{Binding Number}" Header="号码" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.RowSpan="2" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid
+                              Grid.Row="0"
+                              Grid.Column="0"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="主叫" Grid.Column="0" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Path=ExtNoCall.Caller}" Grid.Column="1"/>
+                            <Label Content="被叫" Grid.Column="2" HorizontalAlignment="Right"/>
+                            <Label Content="{Binding Path=ExtNoCall.Callee}" Grid.Column="3"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0" Width="190">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Margin="5 0 0 5" Grid.ColumnSpan="3"  Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Text="{Binding Path=DialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Grid.Row="1" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="1" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="1" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="2" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="1" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="3" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="2" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="4" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="2" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="5" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="2" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="6" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="3" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="7" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="3" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="8" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="3" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="9" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="4" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="*" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="4" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="0" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="4" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="#" FontSize="20" Click="Dial_Click"/>
+                            <Button Grid.Row="5" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" Width="60" Height="48" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" 
+                                    Content="转接" FontSize="14" Click="Transfer_Button_Call_Click"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid x:Key="CustomDialoTransferClose" x:Name="CustomDialoTransferClose" Background="#298edd">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="" Grid.Row="0" Grid.Column="0"/>
+                <Button Grid.Column="1" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="12"
+                                              Height="12"
+                                              Kind="Close" />
+                </Button>
+            </Grid>
+
+            <Grid x:Key="CustomDialoDiaPanel"
+                         x:Name="CustomDialoDiaPanel">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBox Margin="5 0 0 5" Grid.ColumnSpan="3"  Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Text="{Binding Path=DialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Row="1" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="1" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="1" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="2" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="1" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="3" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="2" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="4" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="2" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="5" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="2" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="6" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="3" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="7" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="3" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="8" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="3" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="9" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="4" Grid.Column="0" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="*" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="4" Grid.Column="1" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="0" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="4" Grid.Column="2" Width="51" Height="51" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" Content="#" FontSize="20" Click="Dial_Click"/>
+                <Button Grid.Row="5" Grid.ColumnSpan="3" HorizontalContentAlignment="Center" Width="60" Height="48" Margin="4" Style="{StaticResource AccentCircleButtonStyle}" 
+                        Content="呼叫" FontSize="14" Click="Dial_Click_Submit"/>
+            </Grid>
+            <Grid x:Key="DialogCloseDiaPanel" x:Name="DialogCloseDiaPanel" Background="#298edd">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Content=""  Grid.Row="0" Grid.Column="0"/>
+                <Button Grid.Column="1" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="12"
+                                              Height="12"
+                                              Kind="Close" />
+                </Button>
+            </Grid>
+
+            <Grid x:Key="CustomDialoContactMessage"
+                         x:Name="CustomDialoContactMessage">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MinWidth="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" MinWidth="100" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Margin="1 0 0 0" Content="姓名" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="{StaticResource ControlMargin}" IsEnabled="False" Text="{Binding Path=Home.CurrentContact.Name}" />
+                            <Label Grid.Row="1" Grid.Column="0" Margin="1 0 0 0" Content="部门" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlMargin}" IsEnabled="False" Text="{Binding Path=Home.CurrentContact.Department.Name}" />
+                            <Label Grid.Row="1" Grid.Column="2" Margin="1 0 0 0" Content="职位" />
+                            <TextBox Grid.Row="1" Grid.Column="3" Margin="{StaticResource ControlMargin}" IsEnabled="False" Text="{Binding Path=Home.CurrentContact.Position.Name}" />
+
+                        </Grid>
+                        <DataGrid
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="5"
+                                      IsReadOnly="True"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding Path=Home.CurrentContact.Devices}"
+                                      RowHeaderWidth="0"
+                                      Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding DeviceType.Name}" Header="类型" />
+                                <DataGridTextColumn Binding="{Binding Number}" Header="号码" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid 
+                                      Grid.Row="2"
+                                      Grid.Column="0"
+                                      Margin="5"
+                                      AutoGenerateColumns="False"
+                                      ItemsSource="{Binding Path=Home.CurrentContactMessages}"
+                                      IsReadOnly="True"
+                                      RowHeaderWidth="0"
+                                      Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding From}" Header="发信" />
+                                <DataGridTextColumn Binding="{Binding To}" Header="收信" />
+                                <DataGridTextColumn Binding="{Binding MessageTime}" Header="时间" />
+                                <DataGridTextColumn Binding="{Binding Status}" Header="状态" />
+                                <DataGridTextColumn Binding="{Binding Content}" Header="内容" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+   
+                </Grid>
+            </Grid>
+            <Grid x:Key="DialogClose" Background="#298EDD">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="" Grid.Row="0" Grid.Column="0"/>
+                <Button Grid.Column="1" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="12"
+                                              Height="12"
+                                              Kind="Close" />
+                </Button>
+            </Grid>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="#0a212f">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Row="0"
+              Grid.Column="0"
+              Margin="10 5 5 5"
+              FontSize="12"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Stretch"
+              Background="#0a212f"
+              Controls:VisibilityHelper.IsVisible="{Binding LoggedIn}">
+            <MenuItem Header="文件">
+                <MenuItem Click="MenuItem_Click" Header="首页" Icon="{iconPacks:Modern Kind=Home}" />
+                <MenuItem Click="MenuItem_Click" Header="退出" Icon="{iconPacks:FeatherIcons Kind=LogOut}"/>
+            </MenuItem>
+            <MenuItem Header="联系人">
+                <MenuItem Click="MenuItem_Click" Header="联系人" Icon="{iconPacks:FontAwesome Kind=AddressBookRegular}"/>
+                <MenuItem Click="MenuItem_Click" Header="常用联系人"/>
+                <MenuItem Click="MenuItem_Click" Header="呼叫记录" Icon="{iconPacks:MaterialLight Kind=Phone}"/>
+                <MenuItem Click="MenuItem_Click" Header="操作记录"/>
+            </MenuItem>
+            <MenuItem Header="语音调度">
+                <MenuItem Click="MenuItem_Click" Header="单点呼叫"/>
+                <MenuItem Click="MenuItem_Click" Header="话务监控" Icon="{iconPacks:FontAwesome Kind=HeadphonesAltSolid}"/>
+                <MenuItem Click="MenuItem_Click" Header="广播组" Icon="{iconPacks:Unicons Kind=Megaphone}"/>
+                <MenuItem Click="MenuItem_Click" Header="报警联动呼叫" Icon="{iconPacks:Material Kind=AlarmLightOutline}"/>
+                <MenuItem Click="MenuItem_Click" Header="点名呼叫"/>
+                <MenuItem Click="MenuItem_Click" Header="预案管理"/>
+            </MenuItem>
+            <MenuItem Header="语音会议">
+                <MenuItem Click="MenuItem_Click" Header="会议管理" Icon="{iconPacks:Octicons Kind=CommentDiscussion}"/>
+                <MenuItem Click="MenuItem_Click" Header="会议通话记录"/>
+            </MenuItem>
+            <MenuItem Header="检索播放">
+                <MenuItem Click="MenuItem_Click" Header="事件流管理" Icon="{iconPacks:Material Kind=CalendarRangeOutline}"/>
+                <MenuItem Click="MenuItem_Click" Header="录音文件收藏" Icon="{iconPacks:Unicons Kind=Favorite}"/>
+            </MenuItem>
+            <MenuItem Header="管理配置" >
+                <MenuItem Click="MenuItem_Click" Header="用户管理" Icon="{iconPacks:Unicons Kind=User}"/>
+                <MenuItem Click="MenuItem_Click" Header="部门管理" />
+                <MenuItem Click="MenuItem_Click" Header="岗位管理" />
+                <MenuItem Click="MenuItem_Click" Header="参数设置"/>
+                <MenuItem Click="MenuItem_Click" Header="本机信息" />
+            </MenuItem>
+            <MenuItem Header="关于">
+                <MenuItem Click="MenuItem_Click" Header="关于"/>
+            </MenuItem>
+        </Menu>
+        <ToolBar Grid.Row="0" Grid.Column="1" Controls:VisibilityHelper.IsVisible="{Binding LoggedIn}">
+            <ToolBarPanel>
+                <Button Click="Dial_Panel" ToolTip="拨号" Name="Dial_Button">
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <iconPacks:PackIconBoxIcons  Kind="RegularDialpadAlt"/>
+                        <Label Content="拨号"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="转接" Click="Transfer_Panel" Name="Transfer_Button">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconBoxIcons  Kind="RegularTransferAlt"/>
+                        <Label Content="转接"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="保持" Click="Hold_Button_Click" Name="Hold_Button" >
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconIonicons  Kind="PauseMD"/>
+                        <Label Content="保持"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="取回" Click="Retrive_Button_Click" Name="Retrive_Button">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconModern  Kind="ControlPlay"/>
+                        <Label Content="取回"/>
+                    </StackPanel>
+                </Button>
+
+                <Button ToolTip="挂断" Name="Hangup_Button" Click="Hangup_Button_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconModern Kind="PhoneHangup" />
+                        <Label Content="挂断"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="会议" Click="Meeting_Button_Click" Name="Meeting_Button">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconUnicons Kind="MeetingBoard" />
+                        <Label Content="会议"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="示忙" Click="Busy_Button_Click" Name="Busy_Button" >
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial  Kind="AccountClock" />
+                        <Label Content="示忙"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="示闲" Click="Ready_Button_Click" Name="Ready_Button">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="AccountCheck" />
+                        <Label Content="示闲"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button ToolTip="查看队列" Click="Check_Queue_Button_Click" Name="Check_Queue_Button">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconBoxIcons Kind="SolidPhoneIncoming" />
+                        <Label Content="查看队列"/>
+                    </StackPanel>
+                </Button>
+            </ToolBarPanel>
+        </ToolBar>
+        <Grid Grid.Row="1"  Grid.ColumnSpan="2" >
+            <DockPanel Name="ContentPanel" Background="#10394d">
+                <views:Login DataContext="{Binding}"/>
+            </DockPanel>
+        </Grid>
+        <Grid Controls:VisibilityHelper.IsVisible="{Binding LoggedIn}"  Grid.Row="2"  Grid.ColumnSpan="2" >
+            <StatusBar>
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding Path=User.UserConfig.Extno1, Mode=OneWay}" Foreground="White"/>
+                        <Label Content=" - "  Foreground="White"/>
+                        <Label Content="{Binding Path=User.UserConfig.Extno2, Mode=OneWay}"  Foreground="White"/>
+                        <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="1">
+                    <TextBlock Text="{Binding Path=Message, Mode=OneWay}" />
+                </StatusBarItem>
+
+                <StatusBarItem Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
+                        <Label Content="PBX版本：S100/S300 API：V1.1.0" Foreground="White"/>
+                    </StackPanel>
+                </StatusBarItem>
+
+            </StatusBar>
+        </Grid>
+
+    </Grid>
+</Controls:MetroWindow>

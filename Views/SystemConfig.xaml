@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Arco.Views.SystemConfig"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Arco="clr-namespace:Arco"
+             xmlns:local="clr-namespace:Arco.Views"
+             d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+             mc:Ignorable="d" 
+             Loaded="Control_Loaded" Unloaded="Control_Unloaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Background="#4a516c" Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="0">
+                <iconPacks:PackIconMaterial Kind="LabelMultipleOutline" Width="25" Height="25" Margin="15 5 0 5" Foreground="White"/>
+                <Label Content="本机信息" FontSize="14" HorizontalContentAlignment="Left" Margin="5 3 0 0" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <Button ToolTip="" Click="Save">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="ContentSave" />
+                        <Label Content="保存"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1"
+                       Margin="10 30 10 0"  HorizontalAlignment="Center">
+            <GroupBox Header="本机信息" Margin="0 10 0 20">
+                <StackPanel Width="600">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="PBX型号" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="2"  Height="30" Width="300" HorizontalAlignment="Left" Text="{Binding Path=SystemConfig.Pbxmode}" />
+                        <Label Grid.Row="1" Grid.Column="0" Margin="1 5 0 0" Content="点名呼叫超时时间（秒）" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="1" Grid.Column="1"  Grid.ColumnSpan="3" Margin="2"  Height="30" Width="300" HorizontalAlignment="Left" Text="{Binding Path=SystemConfig.Calltimeout}" />
+                        <Label Grid.Row="2" Grid.Column="0" Margin="1 5 0 0" Content="轮呼超时时间（秒）" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="3" Margin="2"  Height="30" Width="300" HorizontalAlignment="Left" Text="{Binding Path=SystemConfig.Rollcalltimeout}" />
+                        <Label Grid.Row="3" Grid.Column="0" Margin="1 5 0 0" Content="联系人数目限制" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="3" Margin="2"  Height="30" Width="300" HorizontalAlignment="Left" Text="{Binding Path=SystemConfig.Contactlimit}" />
+
+                        <Label Grid.Row="4" Grid.Column="0" Margin="1 5 0 0" Content="分机号码" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="4" Grid.Column="1"  Margin="2"  Height="30" Width="130" HorizontalAlignment="left" Text="{Binding Path=SystemConfig.ExtFrom}" />
+                        <Label Grid.Row="4" Grid.Column="2" Margin="1 5 0 0" Content="-" HorizontalContentAlignment="Center" Width="30"/>
+                        <TextBox Grid.Row="4" Grid.Column="3" Margin="2"  Height="30" Width="130" HorizontalAlignment="right" Text="{Binding Path=SystemConfig.ExtTo}" />
+                        <Label Grid.Row="5" Grid.Column="0" Margin="1 5 0 0" Content="会议室号码" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="5" Grid.Column="1"  Margin="2"  Height="30" Width="130" HorizontalAlignment="left" Text="{Binding Path=SystemConfig.MeetingFrom}" />
+                        <Label Grid.Row="5" Grid.Column="2" Margin="1 5 0 0" Content="-" HorizontalContentAlignment="Center" Width="30"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Margin="2"  Height="30" Width="130" HorizontalAlignment="right" Text="{Binding Path=SystemConfig.MeetingTo}" />
+                        <Label Grid.Row="6" Grid.Column="0" Margin="1 5 0 0" Content="广播组号码" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="6" Grid.Column="1"  Margin="2"  Height="30" Width="130" HorizontalAlignment="left" Text="{Binding Path=SystemConfig.BroadcastingFrom}" />
+                        <Label Grid.Row="6" Grid.Column="2" Margin="1 5 0 0" Content="-" HorizontalContentAlignment="Center" Width="30"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Margin="2"  Height="30" Width="130" HorizontalAlignment="right" Text="{Binding Path=SystemConfig.BroadcastingTo}" />
+
+                        <Label Grid.Row="7" Grid.Column="0" Margin="10" HorizontalAlignment="Right">License</Label>
+                        <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3"  HorizontalAlignment="Left" Text="{Binding Path=SystemConfig.License}"  TextWrapping="Wrap" MinLines="10" Margin="2" Width="300" />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</UserControl>

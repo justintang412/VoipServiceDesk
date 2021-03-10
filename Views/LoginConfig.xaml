@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="Arco.Views.LoginConfig"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Arco="clr-namespace:Arco"
+             xmlns:local="clr-namespace:Arco.Views"
+             d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+             mc:Ignorable="d" 
+             Loaded="Control_Loaded" Unloaded="Control_Unloaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0"  Background="#4a516c" Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="0">
+                <iconPacks:PackIconMaterial Kind="LabelMultipleOutline" Width="25" Height="25" Margin="15 5 0 5" Foreground="White"/>
+                <Label Content="参数设置" FontSize="14" HorizontalContentAlignment="Left" Margin="5 3 0 0" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <Button ToolTip="" Click="Save">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="ContentSave" />
+                        <Label Content="保存"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1"
+                      Margin="10 30 10 0" HorizontalAlignment="Center">
+            <GroupBox Header="参数设置">
+                <StackPanel Width="450" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="用户名" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="2"  Height="30" Text="{Binding Path=LoginConfig.MyUser.Username}"  Name="MyUser_Name"/>
+                        <Label Grid.Row="1" Grid.Column="0" Margin="1 5 0 0" Content="密码" HorizontalContentAlignment="right"/>
+                        <PasswordBox Grid.Row="1" Grid.Column="1" Margin="2"  Height="30" Name="MyPasswordBox"/>
+
+                        <Label Grid.Row="2" Grid.Column="0" Margin="1 5 0 0" Content="是否管理员" HorizontalContentAlignment="right"/>
+                        <CheckBox  Grid.Row="2" Grid.Column="1" Margin="2"  Height="30" 
+                               IsChecked="{Binding Path=LoginConfig.MyUser.Isadmin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Grid.Row="3" Grid.Column="0" Margin="1 5 0 0" Content="本机IP" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=LoginConfig.MyUser.UserConfig.Localip}"/>
+                        <Label Grid.Row="4" Grid.Column="0" Margin="1 5 0 0" Content="本机端口" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=LoginConfig.MyUser.UserConfig.Localport}"/>
+                        <Label Grid.Row="5" Grid.Column="0" Margin="1 5 0 0" Content="服务器IP" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=LoginConfig.MyUser.UserConfig.Serverip}"/>
+
+                        <Label Grid.Row="6" Grid.Column="0" Margin="1 5 0 0" Content="服务器端口" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Margin="2"  Height="30"  Text="{Binding Path=LoginConfig.MyUser.UserConfig.Serverport}"/>
+                        <Label Grid.Row="7" Grid.Column="0" Margin="1 5 0 0" Content="主分机" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=LoginConfig.MyUser.UserConfig.Extno1}"/>
+                        <Label Grid.Row="8" Grid.Column="0" Margin="1 5 0 0" Content="备用分机" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Margin="2"   Height="30" Text="{Binding Path=LoginConfig.MyUser.UserConfig.Extno2}"/>
+
+                        <Label Grid.Row="9" Grid.Column="0" Margin="1 5 0 0" Content="服务器用户名" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" Margin="2"  Height="30"  Text="{Binding Path=LoginConfig.MyUser.UserConfig.Pbxuser}"/>
+                        <Label Grid.Row="10" Grid.Column="0" Margin="1 5 0 0" Content="服务器密码" HorizontalContentAlignment="right"/>
+                        <PasswordBox Grid.Row="10" Grid.Column="1" Margin="2" Height="30"  Name="PBXPasswordBox"/>
+                        <Label Grid.Row="11" Grid.Column="0" Margin="1 5 0 0" Content="签入队列" HorizontalContentAlignment="right"/>
+                        <TextBox Grid.Row="11" Grid.Column="1" Margin="2"  Height="30"  Text="{Binding Path=LoginConfig.MyUser.UserConfig.Queue}"/>
+
+                        <Label Grid.Row="12" Grid.Column="0" Margin="1 5 0 0" Content="队列密码" HorizontalContentAlignment="right"/>
+                        <PasswordBox Grid.Row="12" Grid.Column="1" Margin="2" Height="30"  Name="PBXQueuePasswordBox"/>
+
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,377 @@
+﻿<UserControl x:Class="Arco.Views.Groups"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Arco="clr-namespace:Arco"
+             xmlns:local="clr-namespace:Arco.Views"
+             d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+             mc:Ignorable="d" 
+             Loaded="Control_Loaded" Unloaded="Control_Unloaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Grid x:Key="CustomDialogAdd"
+                         x:Name="CustomDialogAdd"  Background="#10394d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="组名" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5"  Text="{Binding Path=ViewGroups.NewGroup.Name}"/>
+                    <Label Grid.Row="0" Grid.Column="2" Margin="1 5 0 0" Content="号码" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Margin="5" Text="{Binding Path=ViewGroups.NewGroup.Number}"   Name="NewGroup_Number"/>
+
+                    <Label Grid.Row="0" Grid.Column="4" Margin="1 5 0 0" Content="类型" HorizontalContentAlignment="right"/>
+                    <ComboBox Grid.Row="0" Grid.Column="5" Margin="5"
+                              ItemsSource="{Binding ViewGroups.GroupTypes, Mode=OneWay}"
+                              SelectedItem="{Binding ViewGroups.NewGroup.Duplex, Mode=TwoWay, 
+                                   UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}" />
+
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="170"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid Grid.Row="0" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=ViewGroups.NewGroup.AllowExten, Mode=OneWay}"
+                              IsReadOnly="True"
+                            MouseDoubleClick="Dest_Contact_Grid_Double_Click"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="姓名" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="联系方式1" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Devices[1].Number}" Header="联系方式2" Width="1*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel 
+                            Orientation="Horizontal"
+                            Grid.Row="0"
+                            Height="40"
+                            Margin="0">
+                                <TextBox
+                                    Margin="10 0 0 0"
+                                    Width="100"
+                                    Height="18"
+                                    Controls:TextBoxHelper.Watermark="请输入关键词"
+                                    Text="{Binding Path=ViewGroups.ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox  Margin="5 0 0 0" Content="只显示常用联系人" IsChecked="{Binding Path=ViewGroups.IsOnlyFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button ToolTip="过滤" Click="Contact_Search_Button">
+                                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                        <iconPacks:PackIconMaterial Kind="Magnify"/>
+                                        <Label Content="过滤"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <Grid Grid.Row="1"
+                              Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <DataGrid
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=ViewGroups.Contacts, Mode=OneWay}"
+                              IsReadOnly="True"
+                                MouseDoubleClick="Source_Contact_Grid_Double_Click"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Name}" Header="姓名" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="联系方式1" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Devices[1].Number}" Header="联系方式2" Width="1*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+                <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 1 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0">
+                    <Button ToolTip="" Click="Save_Group">
+                        <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                            <iconPacks:PackIconMaterial  Kind="ContentSave"/>
+                            <Label Content="保存"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid x:Key="CustomDialogAddClose" x:Name="CustomDialogAddClose" Background="#298EDD">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconBoxIcons Kind="RegularWindows" Width="18" Height="18" Margin="2 7 0 6" Grid.Row="0" Grid.Column="0" Foreground="White"/>
+                <Label Content="" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="14"
+                                              Height="14"
+                                              Kind="Close"/>
+                </Button>
+            </Grid>
+
+            <Grid x:Key="CustomDialogPlay"
+                         x:Name="CustomDialogPlay">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="语音文件名（不带扩展名）" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5"  Text="{Binding Path=ViewGroups.Music}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Margin="1 5 0 0" Content="播放次数" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5"  Text="{Binding Path=ViewGroups.PlayCount}"/>
+                </Grid>
+                <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 1 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0">
+                    <Button Margin="5 2 5 5" ToolTip="" Height="26" Padding="0" Click="Dialog_GroupPlay_Click">
+                        <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                            <iconPacks:PackIconMaterial Width="12"
+                                              Height="12"
+                                              Kind="ContentSave"  Margin="1 5 1 5"/>
+                            <Label Content="播放"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid x:Key="CustomDialogPlayClose" x:Name="CustomDialogPlayClose" Background="#298EDD">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconBoxIcons Kind="RegularWindows" Width="18" Height="18" Margin="2 7 0 6" Grid.Row="0" Grid.Column="0" Foreground="White"/>
+                <Label Content="" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="14"
+                                              Height="14"
+                                              Kind="Close"/>
+                </Button>
+            </Grid>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#4a516c" Height="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="0">
+                <iconPacks:PackIconMaterial Kind="LabelMultipleOutline" Width="25" Height="25" Margin="15 5 0 5" Foreground="White"/>
+                <Label Content="广播组" FontSize="14" HorizontalContentAlignment="Left" Margin="5 3 0 0" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <Button ToolTip="新增" Click="Add_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconIonicons Kind="AddCircleOutlineiOS"/>
+                        <Label Content="新增"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="修改" Click="Edit_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconFeatherIcons Kind="Edit"/>
+                        <Label Content="修改"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="删除" Click="Del_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterialLight Kind="Delete"/>
+                        <Label Content="删除"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="添加成员" Click="Add_Member_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="AccountPlusOutline"/>
+                        <Label Content="添加成员"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="删除成员" Click="Remove_Member_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconFeatherIcons Kind="Delete"/>
+                        <Label Content="删除成员"/>
+                    </StackPanel>
+                </Button>
+
+                
+
+                <Button ToolTip="组呼" Click="GroupCall_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup"/>
+                        <Label Content="组呼"/>
+                    </StackPanel>
+                </Button>
+
+                <Button ToolTip="语音广播" Click="GroupPlay_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup"/>
+                        <Label Content="语音广播"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" 
+                          Margin="5"
+                          Name="Groups_DataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Path=Groups, Mode=OneWay}"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                      SelectionChanged="Groups_DataGrid_SelectionChanged"
+                          Style="{DynamicResource MahApps.Styles.DataGrid.Azure}" 
+                          GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="名称" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding Number}" Header="广播号码" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding Duplex}" Header="类型" Width="*"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="广播组成员"  Grid.Row="0">
+                    <DataGrid
+                    Name="ChosenGroupContacts_grid"
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding Path=ViewGroups.ChosenGroup.AllowExten}"
+                    IsReadOnly="True" 
+                    SelectionChanged="ChosenGroupContacts_grid_Changed"
+                    Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="名称" />
+                            <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" />
+                            <DataGridTextColumn Binding="{Binding Position.Name}" Header="职位" />
+                            <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="分机号" />
+                            <DataGridTextColumn Binding="{Binding Status}" Header="状态" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+                <GroupBox Header="联系人"  Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel 
+                            Orientation="Horizontal"
+                            Grid.Row="0"
+                            Height="40"
+                            Margin="0">
+                            <TextBox
+                            Margin="10 0 0 0"
+                            Width="100"
+                            Height="18"
+                            Controls:TextBoxHelper.Watermark="请输入关键词"
+                            Text="{Binding Path=ViewGroups.ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <CheckBox  Margin="5 0 0 0" Content="只显示常用联系人" IsChecked="{Binding Path=ViewGroups.IsOnlyFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button ToolTip="过滤" Click="Contact_Search_Button">
+                                <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                    <iconPacks:PackIconMaterial Kind="Magnify"/>
+                                    <Label Content="过滤"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Grid Grid.Row="1"
+                              Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=ViewGroups.Contacts, Mode=OneWay}"
+                              IsReadOnly="True"
+                                Name="Contact_Grid"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="姓名" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="联系方式1" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Devices[1].Number}" Header="联系方式2" Width="1*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

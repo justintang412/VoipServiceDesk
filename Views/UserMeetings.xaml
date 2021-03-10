@@ -1,0 +1,360 @@
+﻿<UserControl x:Class="Arco.Views.UserMeetings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:Arco="clr-namespace:Arco"
+             xmlns:local="clr-namespace:Arco.Views"
+             d:DataContext="{d:DesignInstance Arco:MainWindowViewModel}"
+             mc:Ignorable="d" 
+             Loaded="Control_Loaded" Unloaded="Control_Unloaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Grid x:Key="CustomDialogAdd"
+                         x:Name="CustomDialogAdd"  Background="#10394d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Margin="1 5 0 0" Content="会议名称" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Margin="5"  Text="{Binding Path=UserMeetings.NewMeeting.Name}"/>
+                    <Label Grid.Row="0" Grid.Column="2" Margin="1 5 0 0" Content="会议室号码" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="0" Grid.Column="3"   Margin="5" Text="{Binding Path=UserMeetings.NewMeeting.Number}"/>
+                    <Label Grid.Row="0" Grid.Column="4" Margin="1 5 0 0" Content="开始时间" HorizontalContentAlignment="right"/>
+                    <Controls:DateTimePicker x:Name="DateTimePicker" SelectedDateTime="{Binding Path=UserMeetings.NewMeeting.Starttime}"
+                                                     Grid.Row="0" Grid.Column="5" Margin="2"
+                                                     Culture="{Binding CurrentCulture, Mode=OneWay}"
+                                                     IsClockVisible="True"
+                                                     IsEnabled="True"
+                                                     IsReadOnly="False"
+                                                     ToolTip="开始时间"
+                                                     Orientation="Horizontal"
+                                                     PickerVisibility="All"
+                                                     SelectedDateFormat="Short"
+                                                     SelectedTimeFormat="Short">
+                    </Controls:DateTimePicker>
+
+                    <Label Grid.Row="1" Grid.Column="0" Margin="1 5 0 0" Content="会议主题" HorizontalContentAlignment="right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" 
+                             MinLines="2" MaxLines="2" Text="{Binding Path=UserMeetings.NewMeeting.Content}" />
+
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="170"/>
+                            <RowDefinition Height="220"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=UserMeetings.NewMeeting.Members, Mode=OneWay}"
+                              IsReadOnly="True"
+                            MouseDoubleClick="Dest_Contact_Grid_Double_Click"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Contact.Name}" Header="姓名" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Contact.Department.Name}" Header="部门" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Contact.Position.Name}" Header="岗位" Width="1*"/>
+                                    <DataGridTextColumn Binding="{Binding Device.Number}" Header="参会号码" Width="1*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel 
+                            Orientation="Horizontal"
+                            Grid.Row="0"
+                            Height="40"
+                            Margin="0">
+                                <TextBox
+                                    Margin="10 0 0 0"
+                                    Width="100"
+                                    Height="18"
+                                    Controls:TextBoxHelper.Watermark="请输入关键词"
+                                    Text="{Binding Path=UserMeetings.ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox  Margin="5 0 0 0" Content="只显示常用联系人" IsChecked="{Binding Path=UserMeetings.IsOnlyFavorite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button ToolTip="过滤" Click="Contact_Search_Button">
+                                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                        <iconPacks:PackIconMaterial Kind="Magnify"/>
+                                        <Label Content="过滤"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <Grid Grid.Row="1"
+                              Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <DataGrid
+                              Grid.Row="0"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=UserMeetings.Contacts, Mode=OneWay}"
+                              IsReadOnly="True"
+                                MouseDoubleClick="Source_Contact_Grid_Double_Click"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Name}" Header="姓名" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Department.Name}" Header="部门" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Position.Name}" Header="岗位" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Devices[0].Number}" Header="联系方式1" Width="1*"/>
+                                        <DataGridTextColumn Binding="{Binding Devices[1].Number}" Header="联系方式2" Width="1*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+                <Separator Grid.Row="1" BorderBrush="LightGray" BorderThickness="0 1 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0" Height="40">
+                    <Button ToolTip="" Click="Save_UserMeetings">
+                        <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                            <iconPacks:PackIconMaterial Kind="ContentSave"/>
+                            <Label Content="保存"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid x:Key="CustomDialogAddClose" x:Name="CustomDialogAddClose" Background="#298EDD">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconBoxIcons Kind="RegularWindows" Width="18" Height="18" Margin="2 7 0 6" Grid.Row="0" Grid.Column="0" Foreground="White"/>
+                <Label Content="" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="14"
+                                              Height="14"
+                                              Kind="Close"/>
+                </Button>
+            </Grid>
+            <Grid x:Key="CustomDialogMeeting"
+                         x:Name="CustomDialogMeeting"  Background="#10394d">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Name="MeetingMembersGrid"
+                              Grid.Row="0"
+                              Margin="5"
+                              AutoGenerateColumns="False"
+                              ItemsSource="{Binding Path=UserMeetings.ChosenMeeting.Members, Mode=OneWay}"
+                              IsReadOnly="True"
+                              RowHeaderWidth="0"
+                              Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Contact.Name}" Header="姓名" Width="*" />
+                            <DataGridTextColumn Binding="{Binding Number}" Header="参会号码" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Department.Name}" Header="部门" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Position.Name}" Header="岗位" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Devices[0].Number}" Header="分机" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Devices[1].Number}" Header="手机" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Status}" Header="状态" Width="*" Foreground="Blue"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Separator Grid.Row="1"/>
+                    <StackPanel 
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Grid.Row="2"
+                        Margin="0 0 0 10">
+                        <Button ToolTip="开始" Name="Start_List_Meeting_Button" Click="Start_Meeting">
+                            <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                <iconPacks:PackIconFeatherIcons Kind="Play"/>
+                                <Label Content="开始"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="邀请" Name="Invite_To_List_Meeting_Button"  IsEnabled="False" Click="Invite_To_List_Meeting">
+                            <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                <iconPacks:PackIconMaterial Kind="AccountPlusOutline"/>
+                                <Label Content="邀请"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="移除" Name="Remove_From_List_Meeting_Button" IsEnabled="False" Click="Remove_From_List_Meeting">
+                            <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                                <iconPacks:PackIconFeatherIcons Kind="Trash2"/>
+                                <Label Content="移除"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="解散" Name="Stop_List_Meeting_Button"  IsEnabled="False" Click="Stop_List_Meeting">
+                            <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+
+                                <iconPacks:PackIconMaterial Kind="ExitRun"/>
+                                <Label Content="解散"/>
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid x:Key="CustomDialogMeetingClose" x:Name="CustomDialogMeetingClose" Background="#298EDD">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <iconPacks:PackIconBoxIcons Kind="RegularWindows" Width="18" Height="18" Margin="2 7 0 6" Grid.Row="0" Grid.Column="0" Foreground="White"/>
+                <Label Content="" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="16"/>
+                <Button Grid.Column="2" Grid.Row="0" Background="#298edd" Foreground="White" BorderThickness="0">
+                    <iconPacks:PackIconModern Width="14"
+                                              Height="14"
+                                              Kind="Close"/>
+                </Button>
+            </Grid>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Grid.Column="0" Grid.Row="0">
+                <iconPacks:PackIconMaterial Kind="LabelMultipleOutline" Foreground="White"/>
+                <Label Content="会议管理"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <Button ToolTip="新增" Click="Add_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconIonicons Kind="AddCircleOutlineiOS"/>
+                        <Label Content="新增"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="修改" Click="Edit_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconFeatherIcons Kind="Edit"/>
+                        <Label Content="修改"/>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="删除" Click="Del_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterialLight Kind="Delete"/>
+                        <Label Content="删除"/>
+                    </StackPanel>
+                </Button>
+
+
+                <Button ToolTip="全员会议" Click="GroupCall_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup"/>
+                        <Label Content="全员会议"/>
+                    </StackPanel>
+                </Button>
+
+                <Button ToolTip="单呼" Click="Single_Click">
+                    <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <iconPacks:PackIconMaterial Kind="AccountGroup"/>
+                        <Label Content="单呼"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" 
+                          Margin="5"
+                          Name="Meetings_DataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Path=Meetings, Mode=OneWay}"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                      SelectionChanged="MeetingsGrid_DataGrid_SelectionChanged"
+                          Style="{DynamicResource MahApps.Styles.DataGrid.Azure}" 
+                          GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="名称" Width="2*"/>
+                    <DataGridTemplateColumn Header="会议内容"  Width="6*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Number}" Header="会议室号码" Width="1*"/>
+                    <DataGridTextColumn Binding="{Binding Starttime}" Header="开始时间" Width="1*"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <Grid Grid.Column="1" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="成员"  Grid.Row="0">
+                    <DataGrid
+                    Name="ChosenMeetingContacts_grid"
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding Path=UserMeetings.ChosenMeeting.Members}"
+                    IsReadOnly="True" 
+                    SelectionChanged="ChosenMeetingContacts_grid_Changed"
+                    Style="{DynamicResource MahApps.Styles.DataGrid.Azure}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Contact.Name}" Header="名称" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Department.Name}" Header="部门"  Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Position.Name}" Header="职位"  Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Device.Number}" Header="参会号码"  Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Contact.Status}" Header="状态"  Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
